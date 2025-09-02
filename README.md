@@ -1,0 +1,1 @@
+# docker_static_project1
