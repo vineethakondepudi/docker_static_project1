@@ -8,7 +8,7 @@ sh "docker build -t docker_static_project1 ."
 }
 stage("Run Container"){
 steps{
-sh "docker run -d -p 8083:80 docker_static_project1"
+sh "docker run -d -p 8084:80 docker_static_project1"
 }
 }
 }
