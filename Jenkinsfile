@@ -1,14 +1,29 @@
 pipeline{
 agent any
+      environment {
+        DOCKERHUB_USER = "vineethakondepudi"
+        DOCKERHUB_REPO = "docker_static_project1"
+    }
+
 stages{
 stage("Build Docker Image"){
 steps{
-sh "docker build -t docker_static_project1 ."
+sh "docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest ."
 }
 }
+          stage("Push to Docker Hub") {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker_static_project1', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                    sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest"
+                }
+            }
+        }
+
 stage("Run Container"){
 steps{
-sh "docker run -d -p 8084:80 docker_static_project1"
+   sh "docker rm -f docker_static_project1 || true"
+sh "docker run -d --name docker_static_project1 -p 8084:80 ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest"
 }
 }
 }
