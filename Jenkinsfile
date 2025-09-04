@@ -23,7 +23,7 @@ sh "docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest ."
 stage("Run Container"){
 steps{
    sh "docker rm -f docker_static_project1 || true"
-sh "docker run -d --name docker_static_project1 -p 8084:80 ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest"
+sh "docker run -d --name docker_static_project1 -p 8085:8080 ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest"
 }
 }
 }
