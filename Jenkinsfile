@@ -37,7 +37,6 @@ stage("Deploy to Swarm") {
           --name docker_static_project1 \
           --replicas 3 \
           --publish 8085:80 \
-          --network my_app_net \
           ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest
         """
     }
