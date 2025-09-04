@@ -26,5 +26,22 @@ steps{
 sh "docker run -d --name docker_static_project1 -p 8085:8080 ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest"
 }
 }
+stage("Deploy to Swarm") {
+    steps {
+        // Remove old service if exists
+        sh "docker service rm docker_static_project1 || true"
+        
+        // Deploy new service
+        sh """
+          docker service create \
+          --name docker_static_project1 \
+          --replicas 3 \
+          --publish 8085:80 \
+          --network my_app_net \
+          ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest
+        """
+    }
+}
+
 }
 }
